@@ -19,9 +19,27 @@ def draw():
     global items,current_level,game_over,game_finish
     screen.clear()
     screen.blit("bg",(0,0))
+    if game_over:
+        display_message("You lose!","Try again next time.")
+    elif game_finish:
+        display_message("You win!","Good job!")
+    else:
+        for item in items:
+            item.draw()
 
 def update():
-    pass
+    global items
+    if len(items) == 0:
+        items=make_items(current_level)
+
+
+def make_items(extra_items):
+    items_to_create=get_option(extra_items)
+    new_items=create_items(items_to_create)
+    layout_items(new_items)
+    animate_items(new_items)
+    return new_items
+
 
 def get_option(extra_items):
     items_to_create=["paper"]
@@ -35,6 +53,7 @@ def create_items(items_to_create):
     for option in items_to_create:
         item=Actor(option + "img")
         new_items.append(item)
+    return new_items
     
 def layout_items(items_to_layout):
     num_of_gaps=len(items_to_layout) + 1
